@@ -6,8 +6,8 @@ import random
 import re
 from typing import Any, Dict, List, Optional
 
-from google import genai
-from google.genai import types
+import google.generativeai as genai
+from google.generativeai import types
 
 from config import CCNA_BLUEPRINT, GEMINI_API_KEY, GEMINI_MODEL
 from db.database import bulk_upsert_questions, get_questions, adjust_question_difficulty
@@ -276,3 +276,4 @@ def select_adaptive_questions(
     pool = weak_qs + new_qs + strong_qs
     random.shuffle(pool)
     return pool[:n]
+
