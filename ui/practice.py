@@ -10,7 +10,6 @@ import streamlit as st
 from config import CCNA_BLUEPRINT
 from engine.questions import gen_questions, select_adaptive_questions
 from db.database import update_coverage, update_question_progress
-
 BOOKS_DIR = Path("books")
 DOMAINS = list(CCNA_BLUEPRINT.keys())
 
