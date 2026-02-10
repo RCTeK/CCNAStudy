@@ -188,9 +188,10 @@ def show_practice() -> None:
 # --------------------------
 # 1) Choose study sources
 # --------------------------
+
 st.subheader("1) Choose study sources")
 
-library_filenames = list_pdfs()   # <-- FIXED
+library_filenames = list_pdfs()   # <-- THIS is the correct source
 
 colL, colU = st.columns(2)
 
@@ -198,12 +199,13 @@ with colL:
     use_library = st.checkbox("Use Books Library", value=True)
     selected_library = st.multiselect(
         "Select books from Library",
-        options=library_filenames,   # <-- FIXED
+        options=library_filenames,   # <-- MUST match the variable above
         default=[],
         disabled=(not use_library),
     )
     if use_library and not library_filenames:
         st.info("No library books found. Add PDFs in the **Books Library** tab first.")
+
 
     with colU:
         use_uploads = st.checkbox("Upload new PDFs", value=True)
