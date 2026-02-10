@@ -1,16 +1,15 @@
 # ui/practice.py
-from engine.pdf_loader import list_pdfs
 from __future__ import annotations
 
+from engine.pdf_loader import list_pdfs
 import re
 from pathlib import Path
 from typing import Any, Dict, List, Optional, Tuple
-
 import streamlit as st
 
 from config import CCNA_BLUEPRINT
 from engine.questions import gen_questions, select_adaptive_questions
-from db.database import list_books, update_coverage, update_question_progress
+from db.database import update_coverage, update_question_progress
 
 BOOKS_DIR = Path("books")
 DOMAINS = list(CCNA_BLUEPRINT.keys())
