@@ -1,4 +1,5 @@
 # ui/practice.py
+from engine.pdf_loader import list_pdfs
 from __future__ import annotations
 
 import re
@@ -11,7 +12,7 @@ from config import CCNA_BLUEPRINT
 from engine.questions import gen_questions, select_adaptive_questions
 from db.database import list_books, update_coverage, update_question_progress
 
-BOOKS_DIR = Path("data/books")
+BOOKS_DIR = Path("books")
 DOMAINS = list(CCNA_BLUEPRINT.keys())
 
 # ---------------------------
@@ -184,26 +185,25 @@ def show_practice() -> None:
 
     st.header("🧠 Practice Mode")
 
-    # --------------------------
-    # 1) Choose study sources
-    # --------------------------
-    st.subheader("1) Choose study sources")
+# --------------------------
+# 1) Choose study sources
+# --------------------------
+st.subheader("1) Choose study sources")
 
-    books = list_books() or []
-    library_filenames = [b.get("filename") for b in books if b.get("filename")]
+library_filenames = list_pdfs()   # <-- FIXED
 
-    colL, colU = st.columns(2)
+colL, colU = st.columns(2)
 
-    with colL:
-        use_library = st.checkbox("Use Books Library", value=True)
-        selected_library = st.multiselect(
-            "Select books from Library",
-            options=library_filenames,
-            default=[],
-            disabled=(not use_library),
-        )
-        if use_library and not library_filenames:
-            st.info("No library books found. Add PDFs in the **Books Library** tab first.")
+with colL:
+    use_library = st.checkbox("Use Books Library", value=True)
+    selected_library = st.multiselect(
+        "Select books from Library",
+        options=library_filenames,   # <-- FIXED
+        default=[],
+        disabled=(not use_library),
+    )
+    if use_library and not library_filenames:
+        st.info("No library books found. Add PDFs in the **Books Library** tab first.")
 
     with colU:
         use_uploads = st.checkbox("Upload new PDFs", value=True)
