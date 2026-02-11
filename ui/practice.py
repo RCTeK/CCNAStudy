@@ -312,7 +312,6 @@ def show_practice() -> None:
 
     gen_clicked = st.button("Generate Questions", type="primary")
 
-    # moved below button
     if not st.session_state.questions and not gen_clicked:
         st.info("Generate questions to start practicing.")
 
