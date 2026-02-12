@@ -1,0 +1,19 @@
+* [33mdb1cd37[m[33m ([m[1;36mHEAD[m[33m -> [m[1;32mmain[m[33m)[m Add compiled Python bytecode files for pdf_loader and questions modules
+* [33m73c193a[m Add PDF loading functionality with list_pdfs and load_pdf_bytes functions
+* [33m48770e9[m Remove compiled Python bytecode files from the repository
+* [33m0781448[m Add __init__.py file to engine directory
+* [33mc02199b[m Remove compiled Python bytecode file from repository
+[31m|[m * [33m877bc2c[m[33m ([m[1;31morigin/main[m[33m, [m[1;31morigin/HEAD[m[33m)[m Implement PDF loading and listing functionality
+[31m|[m[31m/[m  
+* [33m2a82c91[m Move comment for clarity in show_practice function
+* [33m570793f[m Refactor show_practice function for improved readability and structure
+* [33m1c8dfb9[m Remove unnecessary blank line in practice.py
+* [33m3d89fab[m Reorder import statements in practice.py for consistency
+* [33m114f9e6[m Clarify comments for library filenames in show_practice function
+* [33m9911e18[m Refactor practice.py to use list_pdfs for library filenames and update BOOKS_DIR path
+* [33m894f339[m Add files via upload
+* [33m9d407bc[m Create .gitkeep
+* [33ma4c468b[m Add compiled Python files and database for CCNA study resources
+* [33m89e1467[m Added Dev Container Folder
+* [33m3b13737[m Update questions.py
+* [33m13f3c40[m Add files via upload
