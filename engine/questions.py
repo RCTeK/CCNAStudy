@@ -216,13 +216,17 @@ Also include these OPTIONAL fields if possible:
 - source_name
 """.strip()
 
-    client = genai.Client(api_key=GEMINI_API_KEY)
+    # ---------------------------
+    # Correct Legacy SDK Usage
+    # ---------------------------
+    genai.configure(api_key=GEMINI_API_KEY)
 
-    resp = client.models.generate_content(
-        model=GEMINI_MODEL,
-        contents=prompt,
-        config=types.GenerateContentConfig(
-            response_mime_type="application/json",
+    model = genai.GenerativeModel(GEMINI_MODEL)
+
+    resp = model.generate_content(
+        prompt,
+        generation_config=types.GenerationConfig(
+            response_mime_type="application/json"
         ),
     )
 
@@ -235,45 +239,11 @@ Also include these OPTIONAL fields if possible:
         if nq:
             normalized.append(nq)
 
-    # If Gemini returns fewer usable questions than requested, still store what we got
     if not normalized:
         raise ValueError("Gemini returned no usable questions (missing fields/options). Try again or reduce chapter text.")
 
-    # ✅ Fix A: ONE fast transaction instead of n commits
+    # One fast DB transaction
     bulk_upsert_questions(normalized)
 
     return normalized
-
-
-def select_adaptive_questions(
-    domain: str,
-    n: int,
-    *,
-    chapter_ids: Optional[List[str]] = None,
-) -> List[Dict[str, Any]]:
-    all_qs = [q for q in (get_questions() or []) if q.get("domain") == domain]
-
-    if chapter_ids:
-        ch_set = set(chapter_ids)
-        all_qs = [q for q in all_qs if q.get("chapter_id") in ch_set]
-
-    new_qs = [q for q in all_qs if int(q.get("seen", 0) or 0) == 0]
-    seen_qs = [q for q in all_qs if int(q.get("seen", 0) or 0) > 0]
-
-    for q in seen_qs:
-        qid = q.get("id")
-        if qid:
-            adjust_question_difficulty(qid)
-
-    def _acc(q: Dict[str, Any]) -> float:
-        seen = int(q.get("seen", 0) or 0)
-        correct = int(q.get("correct", 0) or 0)
-        return (correct / seen) if seen > 0 else 0.0
-
-    weak_qs = [q for q in seen_qs if _acc(q) < 0.8]
-    strong_qs = [q for q in seen_qs if _acc(q) >= 0.8]
-
-    pool = weak_qs + new_qs + strong_qs
-    random.shuffle(pool)
-    return pool[:n]
 
